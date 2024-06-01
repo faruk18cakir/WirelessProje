@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malzeme Ekle</title>
+</head>
+<body>
+    <h1>Malzeme Ekle</h1>
+    <form action="{{ url_for('add_material') }}" method="post">
+        <label for="order_company">Sipariş Eden Firma:</label>
+        <input type="text" id="order_company" name="order_company" required><br>
+
+        <label for="name">Malzeme İsmi:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="type">Malzeme Türü:</label>
+        <input type="text" id="type" name="type" required><br>
+
+        <label for="quantity">Miktar:</label>
+        <input type="text" id="quantity" name="quantity" required><br>
+
+        <label for="vehicle_number">Araç Numarası:</label>
+        <input type="text" id="vehicle_number" name="vehicle_number" required><br>
+
+        <label for="vehicle_plate">Araç Plakası:</label>
+        <input type="text" id="vehicle_plate" name="vehicle_plate" required><br>
+
+        <label for="contact_phone">İletişim Telefonu:</label>
+        <input type="text" id="contact_phone" name="contact_phone" required><br>
+
+        <label for="delivery_address">Teslimat Adresi:</label>
+        <input type="text" id="delivery_address" name="delivery_address" required><br>
+
+        <label for="rfid_code">RFID Kodu:</label>
+        <input type="text" id="rfid_code" name="rfid_code" required><br>
+
+        <input type="submit" value="Malzeme Ekle">
+    </form>
+    <a href="{{ url_for('admin_dashboard') }}">Geri Dön</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veritabanını Düzenle</title>
+</head>
+<body>
+    <h1>Veritabanını Düzenle</h1>
+    <form action="{{ url_for('edit_database') }}" method="post">
+        <label for="rfid_code">RFID Kodu:</label>
+        <input type="text" id="rfid_code" name="rfid_code" required><br>
+
+        <label for="departure_address">Çıkış Adresi:</label>
+        <input type="text" id="departure_address" name="departure_address" required><br>
+
+        <label for="departure_time">Çıkış Zamanı:</label>
+        <input type="text" id="departure_time" name="departure_time" placeholder="YYYY-MM-DD HH:MM:SS" required><br>
+
+        <input type="submit" value="Güncelle">
+    </form>
+    <a href="{{ url_for('admin_dashboard') }}">Geri Dön</a>
+</body>
+</html>

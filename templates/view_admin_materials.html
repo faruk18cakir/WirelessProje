@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tedarik Edilen Malzemeler</title>
+</head>
+<body>
+    <h1>Tedarik Edilen Malzemeler</h1>
+    <table>
+        <tr>
+            <th>Malzemeyi Sipariş Eden Firma</th>
+            <th>Malzemenin İsmi</th>
+            <th>Malzemenin Türü</th>
+            <th>Malzemenin Miktarı</th>
+            <th>Malzemeyi Taşıyacak Olan Aracın Numarası</th>
+            <th>Malzemeyi Taşıyacak Olan Aracın Plakası</th>
+            <th>Malzeme İçin İletişime Geçilebilecek Telefon Numarası</th>
+            <th>Malzemenin Teslim Edileceği Yerin Adresi</th>
+            <th>RFID Kodu</th>
+            <th>Malzeme Takip Bilgisi</th>
+        </tr>
+        {% for material in materials %}
+        <tr>
+            <td>{{ material.order_company }}</td>
+            <td>{{ material.name }}</td>
+            <td>{{ material.type }}</td>
+            <td>{{ material.quantity }}</td>
+            <td>{{ material.vehicle_number }}</td>
+            <td>{{ material.vehicle_plate }}</td>
+            <td>{{ material.contact_phone }}</td>
+            <td>{{ material.delivery_address }}</td>
+            <td>{{ material.rfid_code }}</td>
+            <td>
+                <a href="{{ url_for('track_material') }}?rfid_code={{ material.rfid_code }}">Takip Bilgisi Görüntüle</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('admin_dashboard') }}">Geri Dön</a>
+</body>
+</html>

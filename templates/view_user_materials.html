@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tedarik Edilen Malzemeler</title>
+</head>
+<body>
+    <h1>Tedarik Edilen Malzemeler</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Malzeme İsmi</th>
+                <th>Tür</th>
+                <th>Miktar</th>
+                <th>Plaka</th>
+                <th>İletişim</th>
+                <th>Adres</th>
+                <th>RFID Kodu</th>
+                <th>Takip Bilgileri</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for material in materials %}
+                <tr>
+                    <td>{{ material.name }}</td>
+                    <td>{{ material.type }}</td>
+                    <td>{{ material.quantity }}</td>
+                    <td>{{ material.vehicle_plate }}</td>
+                    <td>{{ material.contact_phone }}</td>
+                    <td>{{ material.delivery_address }}</td>
+                    <td>{{ material.rfid_code }}</td>
+                    <td>
+                        <ul>
+                            {% for tracking in material.trackings %}
+                                <li>{{ tracking.timestamp }} - {{ tracking.location }} - {{ tracking.status }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('user_dashboard') }}">Geri Dön</a>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Malzeme Takibini Gerçekleştir</title>
+</head>
+<body>
+    <h1>Malzeme Takibini Gerçekleştir</h1>
+    <form method="POST">
+        <label for="rfid_code">RFID Kodu:</label>
+        <input type="text" id="rfid_code" name="rfid_code" required>
+        <button type="submit">Takip Et</button>
+    </form>
+    <a href="{{ url_for('user_dashboard') }}">Geri Dön</a>
+    {% if tracking_info %}
+        <h2>Takip Bilgileri</h2>
+        <ul>
+            {% for track in tracking_info %}
+                <li>{{ track.timestamp }} - {{ track.location }} - {{ track.status }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Takip Bilgisi Ekle</title>
+</head>
+<body>
+    <h1>Takip Bilgisi Ekle</h1>
+    <form method="POST" action="{{ url_for('add_tracking') }}">
+        <label for="rfid_code">RFID Kodu:</label>
+        <input type="text" name="rfid_code" id="rfid_code" required>
+        <label for="location">Konum:</label>
+        <input type="text" name="location" id="location" required>
+        <label for="status">Durum:</label>
+        <input type="text" name="status" id="status" required>
+        <button type="submit">Ekle</button>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <a href="{{ url_for('track_material') }}">Geri Dön</a>
+</body>
+</html>
