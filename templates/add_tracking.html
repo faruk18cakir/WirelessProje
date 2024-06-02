@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Takip Bilgisi Ekle</title>
@@ -22,5 +22,48 @@
     {% endif %}
     {% endwith %}
     <a href="{{ url_for('track_material') }}">Geri Dön</a>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takip Bilgisi Ekle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Takip Bilgisi Ekle</h1>
+        <form method="POST" action="{{ url_for('add_tracking') }}" class="mt-4">
+            <div class="form-group">
+                <label for="rfid_code">RFID Kodu:</label>
+                <input type="text" class="form-control" name="rfid_code" id="rfid_code" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Konum:</label>
+                <input type="text" class="form-control" name="location" id="location" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Durum:</label>
+                <input type="text" class="form-control" name="status" id="status" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Ekle</button>
+        </form>
+        <a href="{{ url_for('track_material') }}" class="btn btn-secondary btn-block mt-3">Geri Dön</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

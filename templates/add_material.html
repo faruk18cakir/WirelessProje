@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,5 +39,64 @@
         <input type="submit" value="Malzeme Ekle">
     </form>
     <a href="{{ url_for('admin_dashboard') }}">Geri Dön</a>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malzeme Ekle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Malzeme Ekle</h1>
+        <form action="{{ url_for('add_material') }}" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="order_company">Sipariş Eden Firma:</label>
+                <input type="text" class="form-control" id="order_company" name="order_company" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Malzeme İsmi:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="type">Malzeme Türü:</label>
+                <input type="text" class="form-control" id="type" name="type" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Miktar:</label>
+                <input type="text" class="form-control" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicle_number">Araç Numarası:</label>
+                <input type="text" class="form-control" id="vehicle_number" name="vehicle_number" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicle_plate">Araç Plakası:</label>
+                <input type="text" class="form-control" id="vehicle_plate" name="vehicle_plate" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_phone">İletişim Telefonu:</label>
+                <input type="text" class="form-control" id="contact_phone" name="contact_phone" required>
+            </div>
+            <div class="form-group">
+                <label for="delivery_address">Teslimat Adresi:</label>
+                <input type="text" class="form-control" id="delivery_address" name="delivery_address" required>
+            </div>
+            <div class="form-group">
+                <label for="rfid_code">RFID Kodu:</label>
+                <input type="text" class="form-control" id="rfid_code" name="rfid_code" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Malzeme Ekle</button>
+        </form>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary btn-block mt-3">Geri Dön</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Tedarik Edilen Malzemeler</title>
@@ -36,5 +36,59 @@
         {% endfor %}
     </table>
     <a href="{{ url_for('admin_dashboard') }}">Geri Dön</a>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tedarik Edilen Malzemeler</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Tedarik Edilen Malzemeler</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Malzemeyi Sipariş Eden Firma</th>
+                    <th>Malzemenin İsmi</th>
+                    <th>Malzemenin Türü</th>
+                    <th>Malzemenin Miktarı</th>
+                    <th>Malzemeyi Taşıyacak Olan Aracın Numarası</th>
+                    <th>Malzemeyi Taşıyacak Olan Aracın Plakası</th>
+                    <th>Malzeme İçin İletişime Geçilebilecek Telefon Numarası</th>
+                    <th>Malzemenin Teslim Edileceği Yerin Adresi</th>
+                    <th>RFID Kodu</th>
+                    <th>Malzeme Takip Bilgisi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materials %}
+                <tr>
+                    <td>{{ material.order_company }}</td>
+                    <td>{{ material.name }}</td>
+                    <td>{{ material.type }}</td>
+                    <td>{{ material.quantity }}</td>
+                    <td>{{ material.vehicle_number }}</td>
+                    <td>{{ material.vehicle_plate }}</td>
+                    <td>{{ material.contact_phone }}</td>
+                    <td>{{ material.delivery_address }}</td>
+                    <td>{{ material.rfid_code }}</td>
+                    <td>
+                        <a href="{{ url_for('track_material') }}?rfid_code={{ material.rfid_code }}" class="btn btn-primary">Takip Bilgisi Görüntüle</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Geri Dön</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
