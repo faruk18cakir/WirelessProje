@@ -56,9 +56,10 @@
 <body>
     <div class="container mt-5">
         <h1>Tedarik Edilen Malzemeler</h1>
-        <table class="table mt-3">
-            <thead class="thead-dark">
+        <table class="table table-striped">
+            <thead>
                 <tr>
+                    <th>Tedarikçi Bilgileri</th>
                     <th>Malzeme İsmi</th>
                     <th>Tür</th>
                     <th>Miktar</th>
@@ -66,12 +67,13 @@
                     <th>İletişim</th>
                     <th>Adres</th>
                     <th>RFID Kodu</th>
-                    <th>Takip Bilgileri</th>
+                    <!-- <th>Takip Bilgileri</th> -->
                 </tr>
             </thead>
             <tbody>
-                {% for material in materials %}
+                {% for material, company_name in materials %}
                     <tr>
+                        <td>{{ company_name }}</td>
                         <td>{{ material.name }}</td>
                         <td>{{ material.type }}</td>
                         <td>{{ material.quantity }}</td>
@@ -79,13 +81,13 @@
                         <td>{{ material.contact_phone }}</td>
                         <td>{{ material.delivery_address }}</td>
                         <td>{{ material.rfid_code }}</td>
-                        <td>
+                        <!-- <td>
                             <ul>
                                 {% for tracking in material.trackings %}
                                     <li>{{ tracking.timestamp }} - {{ tracking.location }} - {{ tracking.status }}</li>
                                 {% endfor %}
                             </ul>
-                        </td>
+                        </td> -->
                     </tr>
                 {% endfor %}
             </tbody>

@@ -52,19 +52,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malzeme Takibi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        table {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -87,20 +78,26 @@
         </div>
         <h2 class="mt-5">Takip Bilgisi</h2>
         {% if tracking_info %}
-            <table class="table">
+            <table class="table table-striped mt-3">
                 <thead>
                     <tr>
+                        <th>Sipariş Eden Firma</th>
                         <th>Konum</th>
                         <th>Zaman</th>
                         <th>Durum</th>
+                        <th>Harita</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for tracking in tracking_info %}
                     <tr>
+                        <td>{{ material_info.order_company }}</td>
                         <td>{{ tracking.location }}</td>
                         <td>{{ tracking.timestamp }}</td>
                         <td>{{ tracking.status }}</td>
+                        <td>
+                            <a href="{{ url_for('show_map', location=tracking.location) }}" class="btn btn-info">Harita</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -113,7 +110,7 @@
                 <a href="{{ url_for('add_tracking') }}" class="btn btn-primary">Takip Bilgisi Ekle</a>
             </li>
             <li>
-                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Geri Dön</a>
+                <a href="{{ url_for('view_admin_materials') }}" class="btn btn-secondary">Geri Dön</a>
             </li>
         </ul>
     </div>

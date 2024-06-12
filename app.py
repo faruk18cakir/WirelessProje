@@ -6,7 +6,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rfid_database.db'
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -139,11 +139,18 @@ def edit_database():
     if current_user.role != 'admin':
         return 'Permission denied'
     if request.method == 'POST':
-        rfid_code = request.form['rfid_code']
+        rfid_code = request.form.get('rfid_code')
+        dispatch_address = request.form.get('dispatch_address')
+        dispatch_time = request.form.get('dispatch_time')
+        
+        if not rfid_code or not dispatch_address or not dispatch_time:
+            flash('Lütfen tüm alanları doldurun.', 'danger')
+            return redirect(url_for('edit_database'))
+        
         material = Material.query.filter_by(rfid_code=rfid_code).first()
         if material:
-            material.dispatch_address = request.form['dispatch_address']
-            material.dispatch_time = datetime.utcnow()
+            material.dispatch_address = dispatch_address
+            material.dispatch_time = datetime.strptime(dispatch_time, '%Y-%m-%dT%H:%M')
             db.session.commit()
             flash('Malzeme bilgileri başarıyla güncellendi.', 'success')
         else:
@@ -157,14 +164,16 @@ def track_material():
     if current_user.role != 'admin':
         return 'Permission denied'
     tracking_info = None
+    material_info = None
     if request.method == 'POST':
         rfid_code = request.form['rfid_code']
         material = Material.query.filter_by(rfid_code=rfid_code).first()
         if material:
             tracking_info = Tracking.query.filter_by(material_id=material.id).order_by(Tracking.timestamp).all()
+            material_info = material
         else:
             flash('Bu RFID koduna sahip bir malzeme bulunamadı.', 'danger')
-    return render_template('track_material.html', tracking_info=tracking_info)
+    return render_template('track_material.html', tracking_info=tracking_info, material_info=material_info)
 
 
 @app.route('/add_tracking', methods=['GET', 'POST'])
@@ -209,7 +218,7 @@ def user_dashboard():
 def view_user_materials():
     if current_user.role != 'user':
         return 'Permission denied'
-    materials = Material.query.filter_by(order_company=current_user.company_name).all()
+    materials = db.session.query(Material, User.company_name).join(User, Material.user_id == User.id).filter(Material.order_company == current_user.company_name).all()
     return render_template('view_user_materials.html', materials=materials)
 
 
@@ -219,15 +228,31 @@ def track_user_material():
     if current_user.role != 'user':
         return 'Permission denied'
     tracking_info = None
+    material_info = None
     if request.method == 'POST':
         rfid_code = request.form['rfid_code']
         material = Material.query.filter_by(rfid_code=rfid_code, order_company=current_user.company_name).first()
         if material:
             tracking_info = Tracking.query.filter_by(material_id=material.id).order_by(Tracking.timestamp).all()
+            material_info = material.user.company_name
         else:
             flash('Bu RFID koduna sahip bir malzeme bulunamadı.', 'danger')
-    return render_template('track_user_material.html', tracking_info=tracking_info)
+    return render_template('track_user_material.html', tracking_info=tracking_info, material_info=material_info)
 
+@app.route('/map')
+@login_required
+def show_map():
+    location = request.args.get('location')
+    if location:
+        return render_template('show_map.html', location=location)
+    else:
+        flash("Konum bilgisi bulunamadı.", "danger")
+        if current_user.role == 'admin':
+            return redirect(url_for('track_material'))
+        elif current_user.role == 'user':
+            return redirect(url_for('track_user_material'))
+        else:
+            return 'Permission denied'
 
 if __name__ == '__main__':
     with app.app_context():
