@@ -5,37 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harita Görüntüle</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Harita Görüntüle</h1>
-        <div id="map" style="height: 500px; width: 100%;"></div>
+        <div id="map"></div>
         <a href="{% if current_user.role == 'admin' %}{{ url_for('track_material') }}{% else %}{{ url_for('track_user_material') }}{% endif %}" class="btn btn-secondary mt-3">Geri Dön</a>
     </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         function initMap() {
             var location = "{{ location }}";
-            var geocoder = new google.maps.Geocoder();
+            var map = L.map('map').setView([39.9334, 32.8597], 15);  // Varsayılan merkez: Ankara, Türkiye
 
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: { lat: -34.397, lng: 150.644 }  // Varsayılan merkez
-            });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-            geocoder.geocode({ 'address': location }, function(results, status) {
-                if (status === 'OK') {
-                    map.setCenter(results[0].geometry.location);
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location
-                    });
-                } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-            });
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        var latLng = [data[0].lat, data[0].lon];
+                        map.setView(latLng, 15);
+                        L.marker(latLng).addTo(map)
+                            .bindPopup(`<b>${location}</b>`)
+                            .openPopup();
+                    } else {
+                        alert('Geocode was not successful for the following reason: No results found');
+                    }
+                })
+                .catch(error => {
+                    alert('Geocode was not successful for the following reason: ' + error);
+                });
         }
+
+        document.addEventListener('DOMContentLoaded', initMap);
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
